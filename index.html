@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SWOT Analysis - Win & Wine</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f2ede2 0%, #e8dfd1 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        header {
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            color: #5a3921;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            color: #7a5c3c;
+        }
+        
+        .swot-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .swot-btn {
+            padding: 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            color: white;
+        }
+        
+        .swot-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+        
+        .btn-s {
+            background: #5a8c5a;
+        }
+        
+        .btn-w {
+            background: #a05252;
+        }
+        
+        .btn-o {
+            background: #4a7ba6;
+        }
+        
+        .btn-t {
+            background: #d4a574;
+        }
+        
+        .swot-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            display: none;
+            text-align: left;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .swot-content.active {
+            display: block;
+        }
+        
+        .content-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f2ede2;
+        }
+        
+        .content-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .content-s .content-icon {
+            background: #5a8c5a;
+        }
+        
+        .content-w .content-icon {
+            background: #a05252;
+        }
+        
+        .content-o .content-icon {
+            background: #4a7ba6;
+        }
+        
+        .content-t .content-icon {
+            background: #d4a574;
+        }
+        
+        .content-title {
+            font-size: 1.8rem;
+            color: #5a3921;
+        }
+        
+        .swot-list {
+            list-style: none;
+        }
+        
+        .swot-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid #f2ede2;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .swot-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .swot-bullet {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 15px;
+            flex-shrink: 0;
+            margin-top: 3px;
+        }
+        
+        .content-s .swot-bullet {
+            background: #5a8c5a;
+        }
+        
+        .content-w .swot-bullet {
+            background: #a05252;
+        }
+        
+        .content-o .swot-bullet {
+            background: #4a7ba6;
+        }
+        
+        .content-t .swot-bullet {
+            background: #d4a574;
+        }
+        
+        .swot-text {
+            flex: 1;
+        }
+        
+        .swot-text strong {
+            color: #5a3921;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .default-message {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            text-align: center;
+            color: #7a5c3c;
+        }
+        
+        .default-message h3 {
+            color: #5a3921;
+            margin-bottom: 15px;
+        }
+        
+        @media (max-width: 600px) {
+            .swot-buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>SWOT ANALYSIS</h1>
+            <p class="subtitle">Progetto Video Game - Win & Wine</p>
+        </header>
+        
+        <div class="swot-buttons">
+            <button class="swot-btn btn-s" onclick="showContent('strengths')">PUNTI DI FORZA</button>
+            <button class="swot-btn btn-w" onclick="showContent('weaknesses')">PUNTI DEBOLI</button>
+            <button class="swot-btn btn-o" onclick="showContent('opportunities')">OPPORTUNITÀ</button>
+            <button class="swot-btn btn-t" onclick="showContent('threats')">MINACCE</button>
+        </div>
+        
+        <div id="default-message" class="default-message">
+            <h3>Clicca su una categoria per visualizzare l'analisi</h3>
+            <p>Seleziona uno dei quattro bottoni qui sopra per esplorare la SWOT Analysis del progetto Video Game Win & Wine</p>
+        </div>
+        
+        <!-- STRENGTHS CONTENT -->
+        <div id="strengths" class="swot-content content-s">
+            <div class="content-header">
+                <div class="content-icon">S</div>
+                <h2 class="content-title">Punti di Forza</h2>
+            </div>
+            <ul class="swot-list">
+                <li>
+                    <div class="swot-bullet"></div>
+                    <div class="swot-text">
+                        <strong>Esperienza interattiva unica</strong>
+                        Coinvolge l'utente attivamente nella narrazione della tenuta
+                    </div>
+                </li>
+                <li>
+                    <div class="swot-bullet"></div>
+                    <div class="swot-text">
+                        <strong>Integrazione prodotto-codice</strong>
+                        Codici univoci sulle bottiglie incentivano l'acquisto e il engagement
+                    </div>
+                </li>
+                <li>
+                    <div class="swot-bullet"></div>
+                    <div class="swot-text">
+                        <strong>Storytelling autentico</strong>
+                        Basato su storia reale e documentata del libro "Case di guerra"
+                    </div>
+                </li>
+                <li>
+                    <div class="swot-bullet"></div>
+                    <div class="swot-text">
+                        <strong>Turismo esperienziale</strong>
+                        Incentiva visite fisiche alla tenuta per bonus esclusivi nel gioco
+                    </div>
+                </li>
+            </ul>
+        </div>
+        
+        <!-- WEAKNESSES CONTENT -->
+        <div id="weaknesses" class="swot-content content-w">
+            <div class="content-header">
+                <div class="content-icon">W</div>
+                <h2 class="content-title">Punti Deboli</h2>
+            </div>
+            <ul class="swot-list">
+                <li>
+                    <div class="swot-bullet"></div>
+                    <div class="swot-text">
+                        <strong>Costo sviluppo iniziale</strong>
+                        Investimento significativo per sviluppo videogioco 3D di qualità
+                    </div>
+                </li>
+                <li>
+                    <div class="swot-bullet"></div>
+                    <div class="swot-text">
+                        <strong>Competenza tecnica richiesta</strong>
+                        Necessità di team specializzato in sviluppo giochi e tecnologie 3D
+                    </div>
+                </li>
+                <li>
+                    <div class="swot-bullet"></div>
+                    <div class="swot-text">
+                        <strong>Tempo di sviluppo</strong>
+                        Realizzazione più lunga rispetto ad altri progetti considerati
+                    </div>
+                </li>
+                <li>
+                    <div class="swot-bullet"></div>
+                    <div class="swot-text">
+                        <strong>Accessibilità limitata</strong>
+                        Richiede dispositivo compatibile per esperienza ottimale
+                    </div>
+                </li>
+            </ul>
+        </div>
+        
+        <!-- OPPORTUNITIES CONTENT -->
+        <div id="opportunities" class="swot-content content-o">
+            <div class="content-header">
+                <div class="content-icon">O</div>
+                <h2 class="content-title">Opportunità</h2>
+            </div>
+            <ul class="swot-list">
+                <li>
+                    <div class="swot-bullet"></div>
+                    <div class="swot-text">
+                        <strong>Mercato gaming in crescita</strong>
+                        Settore in forte espansione a livello globale con nuovi utenti
+                    </div>
+                </li>
+                <li>
+                    <div class="swot-bullet"></div>
+                    <div class="swot-text">
+                        <strong>Target giovani</strong>
+                        Attrazione di pubblico più giovane verso il mondo del vino
+                    </div>
+                </li>
+                <li>
+                    <div class="swot-bullet"></div>
+                    <div class="swot-text">
+                        <strong>Partnership strategiche</strong>
+                        Collaborazioni con sviluppatori, publisher o influencer gaming
+                    </div>
+                </li>
+                <li>
+                    <div class="swot-bullet"></div>
+                    <div class="swot-text">
+                        <strong>Contenuti espandibili</strong>
+                        Possibilità di DLC, espansioni e sequel per prolungare lifecycle
+                    </div>
+                </li>
+            </ul>
+        </div>
+        
+        <!-- THREATS CONTENT -->
+        <div id="threats" class="swot-content content-t">
+            <div class="content-header">
+                <div class="content-icon">T</div>
+                <h2 class="content-title">Minacce</h2>
+            </div>
+            <ul class="swot-list">
+                <li>
+                    <div class="swot-bullet"></div>
+                    <div class="swot-text">
+                        <strong>Competizione nel gaming</strong>
+                        Mercato saturo di prodotti e difficoltà di distinguersi
+                    </div>
+                </li>
+                <li>
+                    <div class="swot-bullet"></div>
+                    <div class="swot-text">
+                        <strong>Cambiamenti tecnologici</strong>
+                        Rapida obsolescenza delle tecnologie e piattaforme
+                    </div>
+                </li>
+                <li>
+                    <div class="swot-bullet"></div>
+                    <div class="swot-text">
+                        <strong>Risposta del pubblico</strong>
+                        Possibile scetticismo dei tradizionalisti del vino
+                    </div>
+                </li>
+                <li>
+                    <div class="swot-bullet"></div>
+                    <div class="swot-text">
+                        <strong>Problemi di copyright</strong>
+                        Gestione diritti del libro e della storia raccontata
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function showContent(category) {
+            // Nascondi tutti i contenuti e il messaggio predefinito
+            document.querySelectorAll('.swot-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById('default-message').style.display = 'none';
+            
+            // Mostra il contenuto selezionato
+            document.getElementById(category).classList.add('active');
+        }
+        
+        // Inizializza mostrando il messaggio predefinito
+        document.getElementById('default-message').style.display = 'block';
+    </script>
+</body>
+</html>
